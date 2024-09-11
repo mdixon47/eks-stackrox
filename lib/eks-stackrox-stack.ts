@@ -22,10 +22,11 @@ export class EksStackroxStack extends cdk.Stack {
       vpc: vpc,
       mastersRole: clusterAdmin,
       defaultCapacity: 2, // Default capacity for worker nodes
-      version: eks.KubernetesVersion.V1_21,
+      version: eks.KubernetesVersion.V1_28,
     })
 
     // Optionally, enable any EKS add-ons here
+
     // e.g., cluster.addHelmChart('my-chart', { ... });
 
     // Now integrate StackRox security
@@ -33,12 +34,12 @@ export class EksStackroxStack extends cdk.Stack {
   }
 
   private deployStackRox(cluster: eks.Cluster) {
-    // StackRox Helm chart installation (replace with your StackRox Helm chart details)
     const stackRoxNamespace = "stackrox"
 
+    // Correct Helm repository URL for StackRox
     cluster.addHelmChart("StackRoxChart", {
-      repository: "https://charts.stackrox.io",
-      chart: "stackrox-central-services",
+      repository: "https://mirror.openshift.com/pub/rhacs/charts", // Replace with the correct repository URL
+      chart: "rhacs-central", // Update with the correct chart name
       namespace: stackRoxNamespace,
       values: {
         central: {
